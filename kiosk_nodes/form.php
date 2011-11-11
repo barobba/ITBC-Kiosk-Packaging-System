@@ -8,7 +8,8 @@
     array('name' => 'Nodes',                'url' => 'api/kiosk/0.1/node/json'),
     array('name' => 'Picture books',        'url' => 'api/kiosk/0.1/type/picture-book/json'),
     array('name' => 'Picture book entries', 'url' => 'api/kiosk/0.1/type/picture-book/entries/json'),
-    array('name' => 'Songs',                'url' => 'api/kiosk/0.1/type/picture-tagged/json'),
+    array('name' => 'Picture, Tagged',      'url' => 'api/kiosk/0.1/type/picture-tagged/json'),
+    array('name' => 'Song',                 'url' => 'api/kiosk/0.1/type/song/json')
   );
   $path_items = array();
   foreach ($paths as $path) {
@@ -22,7 +23,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 <form method="GET" action="form_result.php">
 
-  <h3>API</h3>
+  <h3>Cache Kiosk Files</h3>
   
   <div><strong>Path:</strong></div>
   <ul>
@@ -49,7 +50,7 @@
     </li>
   </ul>
   
-  <h3>Reset cache</h3>
+  <div><strong>Reset cache</strong></div>
   <ul>
     <li><input type="radio" name="reset-cache" value="0" checked /> No</li>
     <li><input type="radio" name="reset-cache" value="1" /> Yes</li>
