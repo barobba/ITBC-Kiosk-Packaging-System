@@ -5,6 +5,9 @@ require_once('variables.php');
 
 // Prepare URL
 // TODO: This might want to be handled with a callback to abstract the way URLs are created (given an array of arguments)
+if (!isset($_REQUEST['path'])) {
+  exit('The "path" form option is missing.');
+}
 $request_array = array();
 $request_domain = 'http://liveandtell.com';
 $request_array []= $request_domain;
