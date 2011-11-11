@@ -24,7 +24,8 @@ function default_token_callback() {
 
 // Returns a filepath based on the query string (minus a "reset-cache" key)
 function cache_filepath($token_callback = 'default_token_callback') {
-  return 'cache/'.md5($token_callback()).'.cache';
+  $hash_value = md5($token_callback());
+  return "cache/$hash_value.cache";
 }
 
 // Returns the cached results, unless otherwise requested (using "reset-cache" key in the query string).
