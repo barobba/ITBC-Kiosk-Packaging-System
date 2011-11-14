@@ -4,7 +4,7 @@ require_once('conf.php');
 
 $is_key_missing = FALSE;
 $keys = array('login_url','name', 'pass', 'path', 'mime_type');
-foreah ($keys as $key) {
+foreach ($keys as $key) {
   if(!array_key_exists($key, $_REQUEST)) {
     $is_key_missing = TRUE;
   }

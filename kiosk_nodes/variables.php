@@ -1,8 +1,14 @@
 <?php
 
-// TODO: May want to include a third column ("prepare_url_handler") that would
-// take an input array, and arrange it in the URL. Could include a default
-// handler.
+$endpoints = array(
+  array('name' => 'Nodes',                'url_formatter'=>'latviews_json', 'arguments' => array('url' => 'api/kiosk/0.1/node/json')),
+  array('name' => 'Picture books',        'url_formatter'=>'latviews_json', 'arguments' => array('url' => 'api/kiosk/0.1/type/picture-book/json')),
+  array('name' => 'Picture books (FULL)', 'url_formatter'=>'kiosk',         'arguments' => array('url' => 'kiosk_caching/kiosk_nodes/endpoint-picture-books.php')),
+  array('name' => 'Picture book entries', 'url_formatter'=>'latviews_json', 'arguments' => array('url' => 'api/kiosk/0.1/type/picture-book/entries/json')),
+  array('name' => 'Picture, Tagged',      'url_formatter'=>'latviews_json', 'arguments' => array('url' => 'api/kiosk/0.1/type/picture-tagged/json')),
+  array('name' => 'Song',                 'url_formatter'=>'latviews_json', 'arguments' => array('url' => 'api/kiosk/0.1/type/song/json')),
+);
+
 $api_paths_assoc = array(
   'Nodes'              => array('name' => 'Nodes',                'url' => 'api/kiosk/0.1/node/json'),
   'Picture book'       => array('name' => 'Picture books',        'url' => 'api/kiosk/0.1/type/picture-book/json'),
