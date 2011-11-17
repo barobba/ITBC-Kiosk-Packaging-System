@@ -37,8 +37,10 @@ function latmerge_picture_book(&$node) {
   $book_query = cached_content_url('picture-book', $node->NID);
   $book = file_get_contents($book_query);
   $book = json_decode($book);
-  $book = $book->pictureBooks[0]->pictureBook;
-  $node = (object)array_merge((array)$node, (array)$book);
+  if (isset($book->pictureBooks[0])) {
+    $book = $book->pictureBooks[0]->pictureBook;
+    $node = (object)array_merge((array)$node, (array)$book);
+  }
   // Nothing to return; modified input variable
 }
 
