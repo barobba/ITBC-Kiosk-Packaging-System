@@ -1,10 +1,12 @@
 <?php
 
+ini_set('implicit_flush', 1);
+
+require_once('../_functions/common.php');
 require_once('../_config/system-settings.php');
 require_once('../_config/config.php');
 require_once('../_libraries/folder_array/folder_array.php');
 require_once('../_libraries/endpoint_functions/functions.php');
-require_once('common.php');
 
 // TODO: Allow package information to come from other sources, such as POST data or endpoints. 
 require_once('include-packages.php');

@@ -3,7 +3,6 @@
 require_once('../_config/system-settings.php');
 require_once('../_config/config.php');
 require_once('../_libraries/endpoint_functions/functions.php');
-require_once('../_libraries/retrieval_functions/functions.php');
 
 function process_songs($data_source_url, $results_directory) {
 

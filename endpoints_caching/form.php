@@ -8,7 +8,7 @@
     'action' => 'form-results.php',
     'elements' => array(
       'endpoints' => $endpoints,
-      'default_value_string' => implode('+', explode("\n", file_get_contents($config['domain'].'/endpoints/selected-nodes/nids')))
+      'default_value_string' => implode('+', explode("\n", file_get_contents($config['domain'].'/endpoints/selected-nodes/json.php?file=nids')))
     ),
   );
   

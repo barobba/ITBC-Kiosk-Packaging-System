@@ -13,12 +13,12 @@ function get_filename() {
     $filename = 'nids';
   }
   elseif (isset($_REQUEST['file'])) {
-    $request = $_REQUEST['file'];
-    $filename = 'list_of_selected_' . $request;
+    $filename = 'selected_' . $_REQUEST['file'];
   }
   else {
     exit('Invalid option(s) for returning node NIDs.');
   }
+  return $filename;
 }
 
 function convert_line_endings(&$text) {

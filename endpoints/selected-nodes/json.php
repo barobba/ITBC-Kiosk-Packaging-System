@@ -1,4 +1,5 @@
 <?php
+require_once('../../_functions/common.php');
 require_once('functions.php');
 
 $filename = get_filename();

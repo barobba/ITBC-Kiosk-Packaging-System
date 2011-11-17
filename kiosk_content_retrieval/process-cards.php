@@ -3,15 +3,17 @@
 require_once('../_config/system-settings.php');
 require_once('../_config/config.php');
 require_once('../_libraries/endpoint_functions/functions.php');
-require_once('../_libraries/retrieval_functions/functions.php');
+require_once('functions.php');
 
 function process_cards($data_source_url, $results_directory) {
 
   print "Processing cards\n";
   
   // Retrieve the list of nodes from the data source
-  $nids = file_get_contents($data_source_url);
-  $nids = json_decode($nids);
+  $nids = nids_retrieve($data_source_url);
+  if (empty($nids)) {
+    exit("Could not find NIDs to process");
+  }
   
   foreach ($nids as $nid) {
     
@@ -43,40 +45,52 @@ function process_cards($data_source_url, $results_directory) {
       
       $filename = explode('/', $picture->pictureURL);
       $filename = array_pop($filename);
-      if (!empty($filename)) {
-        
+      if (empty($filename)) {
+        continue;
+      }
+
+      // Get the file extension
+      $file_array = explode('.', $filename);
+      $file_ext = array_pop($file_array);
+
+      // SPECIAL CASE: CREATE THIS SPECIAL FILENAME FOR THE JAVASCRIPT
+      // APPLICATION TO USE (UNIFIED FILE NAMING).
+      $picture->pictureFilename = $picture->NID.'.'.$file_ext;
+      $filepath = $dirpath.'/'.$picture->pictureFilename;
+      
+      if (!file_exists($filepath)) {
+        // File isn't already saved, so retrieve and save picture
         print "Retrieving picture $picture->pictureURL\n";
         $picture_data = file_get_contents($picture->pictureURL);
         print "Retrieval finished\n";
-    
-        $file_array = explode('.', $filename);
-        $file_ext = array_pop($file_array);
-        $filepath = $dirpath.'/'.$picture->NID.'.'.$file_ext;
-
-        // UPDATE CARD DATA
-        // TODO: Put this in the endpoint for "cards".
-        $picture->pictureFilename = $picture->NID.'.'.$file_ext;
-
-        // SAVE PICTURES
         print "Saving picture $filepath\n";
         file_put_contents($filepath, $picture_data);
         print "Saved picture\n";
-        
+      }
+      else {
+        print "Already downloaded picture.\n";
+      }
+      
+      $outfile = $dirpath.'/'.$picture->NID.'-COLORING.'.$file_ext;
+      if (!file_exists($outfile)) {
         // GENERATE COLORING PAGE
         print "Creating coloring page from picture\n";
-        $outfile = $dirpath.'/'.$picture->NID.'-COLORING.'.$file_ext;
         `/usr/local/bin/convert $filepath -resize 700x700 $outfile`;
         `/usr/local/bin/convert $filepath -define convolve:scale='!' -define morphology:compose=Lighten -morphology Convolve 'Sobel:>' $outfile`;
         `/usr/local/bin/convert $outfile -colorspace Gray -equalize -threshold 75% -negate -statistic Maximum 2x2 $outfile`;
         print "Finished creating coloring page\n";
-        
-        // GENERATE THUMBNAIL
-        $outfile_thumb = $dirpath.'/'.$picture->NID.'-THUMB.'.$file_ext;
-        `/usr/local/bin/convert $filepath -thumbnail 100x100 $outfile_thumb`;
-        
       }
       else {
-        print_r('Could not parse this URL: '.$pictureURL);
+        print "Already generated, coloring page.\n";
+      }
+        
+      $outfile_thumb = $dirpath.'/'.$picture->NID.'-THUMB.'.$file_ext;
+      if (!file_exists($outfile_thumb)) {
+        // GENERATE THUMBNAIL
+        `/usr/local/bin/convert $filepath -thumbnail 100x100 $outfile_thumb`;
+      }
+      else {
+        print "Already generated, thumbnail.";
       }
       
     } // end foreach picture

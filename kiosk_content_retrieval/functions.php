@@ -1,7 +1,22 @@
 <?php
 
+function nids_retrieve($data_source_url) {  
+  $nid_string = file_get_contents($data_source_url);
+  $nids = json_decode($nid_string);
+  return $nids;
+}
+
 function audio_retrieve($audio_ids, $local_path) {
 
+  // Take out the audio IDs that already exist
+  foreach ($audio_ids as $index => $audio_id) {
+    $local_filepath = $local_path.'/'.$audio_id.'.flv';
+    if (file_exists($local_filepath)) {
+      unset($audio_ids[$index]);
+      print "Audio file exists...skipping\n";
+    }
+  }
+  
   // Connect
   $audio_host_domain = $GLOBALS['config']['audio_host']['domain'];
   $CONN = ssh2_connect($audio_host_domain, 22);
@@ -36,15 +51,26 @@ function audio_retrieve($audio_ids, $local_path) {
 }
 
 function audio_convert($audio_ids, $local_path) {
+  
+  // Take out the audio IDs that already exist
+  foreach ($audio_ids as $index => $audio_id) {
+    $local_filepath = $local_path.'/'.$audio_id.'.ogg';
+    if (file_exists($local_filepath)) {
+      unset($audio_ids[$index]);
+      print "Audio file exists...skipping\n";
+    }
+  }
+  
   foreach ($audio_ids as $audio_id) {
+    
     print "Converting audio\n";
     $file_input = $local_path.'/'.$audio_id.'.flv';
     $file_output = $local_path.'/'.$audio_id.'.ogg';
     if (PHP_OS == 'WINNT') {
-    	print `c:\\program files\\ffmpeg2theora\\ffmpeg2theora.exe $file_input -o $file_output` . "\n";
+      print `c:\\program files\\ffmpeg2theora\\ffmpeg2theora.exe $file_input -o $file_output` . "\n";
     }
     else {
-    	print `/usr/local/bin/ffmpeg2theora $file_input -o $file_output` . "\n";
+      print `/usr/local/bin/ffmpeg2theora $file_input -o $file_output` . "\n";
     }
   }
   print "Finished converting audio\n";
