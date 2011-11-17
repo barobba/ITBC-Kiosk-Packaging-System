@@ -27,7 +27,7 @@ function _folder_array_recurse($filename, $filepath) {
         continue;
       }
       
-      $folders[$sub_filename] = _folder_array_recurse($sub_filename, $filepath.'\\'.$sub_filename);
+      $folders[$sub_filename] = _folder_array_recurse($sub_filename, $filepath.'/'.$sub_filename);
       
     }
     return $folders;
