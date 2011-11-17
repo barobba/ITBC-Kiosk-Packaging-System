@@ -9,22 +9,24 @@ function _folder_array_recurse($filename, $filepath) {
   
   print $filepath."\n";
   
-  $is_dir = is_dir($filepath);
-  if ($is_dir) {
+  if (!is_dir($filepath)) {
+    // BASIS CASE
+    return $filename;
+  }
+  else {
     $folders = array();
     $folder_contents = scandir($filepath);
     foreach ($folder_contents as $sub_filename) {
-      if ($sub_filename != '.' && $sub_filename != '..') {
-        $folders[$sub_filename] = _folder_array_recurse($sub_filename, $filepath.'\\'.$sub_filename);
+
+      // Skip the . and ..
+      if ($sub_filename == '.' || $sub_filename == '..') {
+        continue;
       }
-      else {
-        // skipping . and ..
-      }
+      
+      $folders[$sub_filename] = _folder_array_recurse($sub_filename, $filepath.'\\'.$sub_filename);
+      
     }
     return $folders;
-  }
-  else {
-    return $filename;
   }
   
 }
