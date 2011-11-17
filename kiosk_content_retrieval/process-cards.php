@@ -40,12 +40,14 @@ function process_cards($data_source_url, $results_directory) {
     foreach ($cards->cards as &$picture) {
       
       if (empty($picture->pictureURL)) {
+        print "No picture URL...skipping.";
         continue;
       }
       
       $filename = explode('/', $picture->pictureURL);
       $filename = array_pop($filename);
       if (empty($filename)) {
+        print "Cannot find filename...skipping.";
         continue;
       }
 
