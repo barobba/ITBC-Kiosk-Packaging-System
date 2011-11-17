@@ -42,7 +42,9 @@ function audio_retrieve($audio_ids, $local_path) {
     $remote_filepath = $audio_host_path.'/'.$audio_id.'.flv';
     $audio_data = file_get_contents("ssh2.sftp://{$SFTP}/".$remote_filepath);
     $local_filepath = $local_path.'/'.$audio_id.'.flv';
-    file_put_contents($local_filepath, $audio_data);
+    if (!empty($audio_data)) {
+      file_put_contents($local_filepath, $audio_data);
+    }
   }
   print "Finished retrieving audio \n";
 }

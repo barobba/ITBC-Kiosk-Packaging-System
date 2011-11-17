@@ -70,7 +70,9 @@ function process_cards($data_source_url, $results_directory) {
         $picture_data = file_get_contents($picture->pictureURL);
         print "Retrieval finished\n";
         print "Saving picture $filepath\n";
-        file_put_contents($filepath, $picture_data);
+        if (!empty($picture_data)) {
+          file_put_contents($filepath, $picture_data);
+        }
         print "Saved picture\n";
       }
       else {
