@@ -38,21 +38,18 @@ function audio_retrieve($audio_ids, $local_path) {
   
   foreach ($audio_ids as $audio_id) {
     print "Retrieving $audio_id\n";
-    
     $audio_host_path = $GLOBALS['config']['audio_host']['path'];
     $remote_filepath = $audio_host_path.'/'.$audio_id.'.flv';
     $audio_data = file_get_contents("ssh2.sftp://{$SFTP}/".$remote_filepath);
-    
     $local_filepath = $local_path.'/'.$audio_id.'.flv';
     file_put_contents($local_filepath, $audio_data);
-    
   }
   print "Finished retrieving audio \n";
 }
 
 function audio_convert($audio_ids, $local_path) {
   
-  // Take out the audio IDs that already exist
+  // Take out the audio IDs that have already been converted
   foreach ($audio_ids as $index => $audio_id) {
     $local_filepath = $local_path.'/'.$audio_id.'.ogg';
     if (file_exists($local_filepath)) {
@@ -62,16 +59,21 @@ function audio_convert($audio_ids, $local_path) {
   }
   
   foreach ($audio_ids as $audio_id) {
-    
-    print "Converting audio\n";
     $file_input = $local_path.'/'.$audio_id.'.flv';
-    $file_output = $local_path.'/'.$audio_id.'.ogg';
-    if (PHP_OS == 'WINNT') {
-      print `c:\\program files\\ffmpeg2theora\\ffmpeg2theora.exe $file_input -o $file_output` . "\n";
+    if (file_exists($file_input)) {
+      print "Converting audio\n";
+      $file_output = $local_path.'/'.$audio_id.'.ogg';
+      if (PHP_OS == 'WINNT') {
+        print `c:\\program files\\ffmpeg2theora\\ffmpeg2theora.exe $file_input -o $file_output` . "\n";
+      }
+      else {
+        print `/usr/local/bin/ffmpeg2theora $file_input -o $file_output` . "\n";
+      }
     }
     else {
-      print `/usr/local/bin/ffmpeg2theora $file_input -o $file_output` . "\n";
+      print "Audio file missing...so can't convert it.";
     }
+    
   }
   print "Finished converting audio\n";
 }
