@@ -6,11 +6,8 @@ function folder_array($filepath) {
 
 function _folder_array_recurse($filename, $filepath) {
   
-  $is_file = !is_dir($filepath);
-  if ($is_file) {
-    return $filename;
-  }
-  else {
+  $is_dir = is_dir($filepath);
+  if ($is_dir) {
     $folders = array();
     $folder_contents = scandir($filepath);
     foreach ($folder_contents as $sub_filename) {
@@ -22,6 +19,9 @@ function _folder_array_recurse($filename, $filepath) {
       }
     }
     return $folders;
+  }
+  else {
+    return $filename;
   }
   
 }
