@@ -45,6 +45,9 @@ function audio_retrieve($audio_ids, $local_path) {
     if (!empty($audio_data)) {
       file_put_contents($local_filepath, $audio_data);
     }
+    else {
+      print "WARNING...file contents were empty!";
+    }
   }
   print "Finished retrieving audio \n";
 }

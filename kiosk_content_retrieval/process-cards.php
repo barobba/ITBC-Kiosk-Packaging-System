@@ -73,6 +73,9 @@ function process_cards($data_source_url, $results_directory) {
         if (!empty($picture_data)) {
           file_put_contents($filepath, $picture_data);
         }
+        else {
+          print "WARNING:....file contents were empty!";
+        }
         print "Saved picture\n";
       }
       else {
