@@ -3,6 +3,7 @@
 require_once('../_config/system-settings.php');
 require_once('../_config/config.php');
 require_once('../_libraries/endpoint_functions/functions.php');
+require_once('functions.php');
 
 function process_songs($data_source_url, $results_directory) {
 
@@ -12,23 +13,21 @@ function process_songs($data_source_url, $results_directory) {
   // Retrieve the list of nodes from the data source
   //
   
-  $nids = file_get_contents($data_source_url);
-  $nids = json_decode($nids);
+  $nids = nids_retrieve($data_source_url);
+  if (empty($nids)) {
+    exit("Could not find NIDs to process");
+  }
   
   //
   // Retrieve the songs
   //
-  
-  // RETRIEVE SONG DATA
   print "Retrieving song data\n";
-  $nids = implode('+', $nids);
   $song_data_url = songs_url_prepare($nids);
   $songs = songs_retrieve($song_data_url);
 
   //
   // RETRIEVE AUDIO
   //
-  
   $audio_ids = array();
   foreach ($songs->songs as &$song) {
     if (!empty($song->songAudio->audioID)) {
@@ -47,9 +46,10 @@ function process_songs($data_source_url, $results_directory) {
   
 }
 
-function songs_url_prepare($nid) {
+function songs_url_prepare($nids) {
+  $nids_query_values = implode('+', $nids);
   $no_reset_cache = 0;
-  return $endpoint_url = cached_content_url('song-custom', $nid, $no_reset_cache);
+  return $endpoint_url = cached_content_url('song-custom', $nids_query_values, $no_reset_cache);
 }
 
 function songs_retrieve($data_url) {
