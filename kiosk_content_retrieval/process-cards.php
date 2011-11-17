@@ -74,7 +74,7 @@ function process_cards($data_source_url, $results_directory) {
       }
       
       $outfile = $dirpath.'/'.$picture->NID.'-COLORING.'.$file_ext;
-      if (!file_exists($outfile)) {
+      if (file_exists($filepath) && !file_exists($outfile)) {
         // GENERATE COLORING PAGE
         print "Creating coloring page from picture\n";
         `/usr/local/bin/convert $filepath -resize 700x700 $outfile`;
@@ -83,16 +83,16 @@ function process_cards($data_source_url, $results_directory) {
         print "Finished creating coloring page\n";
       }
       else {
-        print "Already generated, coloring page.\n";
+        print "Already generated coloring page, or input file missing.\n";
       }
         
       $outfile_thumb = $dirpath.'/'.$picture->NID.'-THUMB.'.$file_ext;
-      if (!file_exists($outfile_thumb)) {
+      if (file_exists($filepath) && !file_exists($outfile_thumb)) {
         // GENERATE THUMBNAIL
         `/usr/local/bin/convert $filepath -thumbnail 100x100 $outfile_thumb`;
       }
       else {
-        print "Already generated, thumbnail.";
+        print "Already generated thumbnail, or input file missing.";
       }
       
     } // end foreach picture
