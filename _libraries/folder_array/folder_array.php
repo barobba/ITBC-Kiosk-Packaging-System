@@ -11,9 +11,12 @@ function _folder_array_recurse($filename, $filepath) {
   
   if (!is_dir($filepath)) {
     // BASIS CASE
+    print "It's a file\n";
     return $filename;
   }
   else {
+    // RECURSIVE CASE
+    print "It's a directory\n";
     $folders = array();
     $folder_contents = scandir($filepath);
     foreach ($folder_contents as $sub_filename) {
