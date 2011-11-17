@@ -17,6 +17,9 @@ function process_cards($data_source_url, $results_directory) {
   
   foreach ($nids as $nid) {
     
+    if (empty($nid)) {
+      continue;
+    }
     print "$nid\n";
 
     // RETRIEVE CARD DATA
@@ -26,6 +29,7 @@ function process_cards($data_source_url, $results_directory) {
     $card_data_url = cards_url_prepare($card_nid);
     $cards = cards_retrieve($card_data_url);
     if (empty($cards->cards)) {
+      print "Nothing to print...\n";
       continue;
     }
 
