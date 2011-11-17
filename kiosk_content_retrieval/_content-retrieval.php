@@ -1,7 +1,5 @@
 <?php
 
-ini_set('implicit_flush', 1);
-
 require_once('../_functions/common.php');
 require_once('../_config/system-settings.php');
 require_once('../_config/config.php');
