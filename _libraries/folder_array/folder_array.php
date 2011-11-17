@@ -9,7 +9,8 @@ function _folder_array_recurse($filename, $filepath) {
   
   print $filepath."\n";
   
-  if (!is_dir($filepath)) {
+  // NOTE: "IS_DIR()" WASN'T WORKING ON LINUX (OR POSSIBLY PHP VERSION).
+  if (!opendir($filepath)) {
     // BASIS CASE
     print "It's a file\n";
     return $filename;
