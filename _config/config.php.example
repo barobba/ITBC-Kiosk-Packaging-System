@@ -1,0 +1,17 @@
+<?php
+
+$config = array(
+  'audio_host' => array(
+    'domain' => 'DOMAIN',
+    'path' => 'PATH',
+    'name' => 'NAME',
+    'pass' => 'PASS',
+  ),
+);
+
+if (PHP_OS == 'WINNT') {
+  $config['domain'] = 'DOMAIN';
+}
+else {
+  $config['domain'] = 'DOMAIN';
+}

@@ -1,0 +1,52 @@
+
+SUMMARY
+
+  Here is how the programs that kept in the list of files below work
+  together.
+
+  The main file retrieval program is here:
+  (File "kiosk_content_retrieval")
+
+    The main file retrieval program does the following:
+    
+    1. First, the system checks for which nodes to retrieve.
+       (File "endpoints/selected-nodes")
+
+    2. Then, the system calls for the data, via a caching system.
+       (File "endpoints_caching")
+       
+          A. The caching system calls local and remote endpoints, and
+             returns a cached copy of the data.
+             
+             (File "endpoints/picture-books/")
+             (File "endpoints/songs/")
+             (URL http://liveandtell.com/api/kiosk/0.1/.../json/[nids])
+             
+    3. Finally, the system retrieves the referenced media and performs any
+       file conversions or file processing needed.
+
+FILES
+          
+_libraries/caching/
+    For caching the results of function calls
+    
+_libraries/drupal_auth_request
+    For signing into Drupal on the back-end, to retrieve private files
+    
+_settings/
+    Settings files that are shared across all the programs
+
+endpoints/picture-books/
+    Source for LAT Picture Book content
+
+endpoints/selected-nodes/
+    Listing of nodes selected for the kiosk
+
+endpoints_caching/
+  For caching results from endpoints
+
+kiosk_content_retrieval/
+kiosk_content_retrieval/coloring_books/
+kiosk_content_retrieval/songs/
+kiosk_content_retrieval/cards/
+  For retrieving kiosk content

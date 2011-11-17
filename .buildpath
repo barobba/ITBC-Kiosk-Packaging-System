@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<buildpath>
-	<buildpathentry kind="src" path="caching"/>
-	<buildpathentry kind="src" path="drupal_auth_request"/>
-	<buildpathentry kind="src" path="kiosk_nodes"/>
-	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
-</buildpath>
