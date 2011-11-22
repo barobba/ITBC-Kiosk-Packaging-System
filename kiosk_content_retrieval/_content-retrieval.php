@@ -53,6 +53,7 @@ else {
         // Run the handler
         $function = 'process_'.$handler;
         $data_source = $package['data_source_url']; 
+        verbose("Starting handler: $function");
         $function($data_source, $results_directory);
         
         // Add a directory tree (_files.json)
