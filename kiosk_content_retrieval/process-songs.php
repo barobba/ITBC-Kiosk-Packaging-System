@@ -1,5 +1,6 @@
 <?php
 
+require_once('../_functions/common.php');
 require_once('../_config/system-settings.php');
 require_once('../_config/config.php');
 require_once('../_libraries/endpoint_functions/functions.php');
@@ -7,7 +8,7 @@ require_once('functions.php');
 
 function process_songs($data_source_url, $results_directory) {
 
-  print "Processing songs\n";
+  verbose("Processing songs\n");
   
   //
   // Retrieve the list of nodes from the data source
@@ -21,7 +22,7 @@ function process_songs($data_source_url, $results_directory) {
   //
   // Retrieve the songs
   //
-  print "Retrieving song data\n";
+  verbose("Retrieving song data\n");
   $song_data_url = songs_url_prepare($nids);
   $songs = songs_retrieve($song_data_url);
 
@@ -42,7 +43,7 @@ function process_songs($data_source_url, $results_directory) {
   //
   
   song_data_save($results_directory, '_data.json', $songs);
-  print "Song data saved\n";
+  verbose("Song data saved\n");
   
 }
 

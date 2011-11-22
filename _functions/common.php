@@ -28,3 +28,9 @@ function assoc_or_die($key, $var, $msg) {
     exit($msg);
   }
 }
+
+function verbose($msg) {
+  print '<div><pre>'.$msg.'</pre></div>';
+  flush();
+  ob_flush();
+}

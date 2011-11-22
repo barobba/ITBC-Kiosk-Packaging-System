@@ -1,5 +1,6 @@
 <?php
 
+require_once('../_functions/common.php');
 require_once('../_config/system-settings.php');
 require_once('../_config/config.php');
 require_once('../_libraries/endpoint_functions/functions.php');
@@ -7,7 +8,7 @@ require_once('functions.php');
 
 function process_cards($data_source_url, $results_directory) {
 
-  print "Processing cards\n";
+  verbose("Processing cards\n");
   
   // Retrieve the list of nodes from the data source
   $nids = nids_retrieve($data_source_url);
@@ -20,16 +21,16 @@ function process_cards($data_source_url, $results_directory) {
     if (empty($nid)) {
       continue;
     }
-    print "$nid\n";
+    verbose("$nid\n");
 
     // RETRIEVE CARD DATA
-    print "Retrieving card data\n";
+    verbose("Retrieving card data\n");
     
     $card_nid = $nid;
     $card_data_url = cards_url_prepare($card_nid);
     $cards = cards_retrieve($card_data_url);
     if (empty($cards->cards)) {
-      print "Nothing to print...\n";
+      verbose("Nothing to print...\n");
       continue;
     }
 
@@ -40,18 +41,18 @@ function process_cards($data_source_url, $results_directory) {
     }
 
     // RETRIEVE PICTURES
-    print "Retrieving pictures\n";
+    verbose("Retrieving pictures\n");
     foreach ($cards->cards as &$picture) {
       
       if (empty($picture->pictureURL)) {
-        print "No picture URL...skipping.";
+        verbose("No picture URL...skipping.");
         continue;
       }
       
       $filename = explode('/', $picture->pictureURL);
       $filename = array_pop($filename);
       if (empty($filename)) {
-        print "Cannot find filename...skipping.";
+        verbose("Cannot find filename...skipping.");
         continue;
       }
 
@@ -66,46 +67,68 @@ function process_cards($data_source_url, $results_directory) {
       
       if (!file_exists($filepath)) {
         // File isn't already saved, so retrieve and save picture
-        print "Retrieving picture $picture->pictureURL\n";
+        verbose("Retrieving picture $picture->pictureURL\n");
         $picture_data = file_get_contents($picture->pictureURL);
-        print "Retrieval finished\n";
-        print "Saving picture $filepath\n";
+        verbose("Retrieval finished\n");
+        verbose("Saving picture $filepath\n");
         if (!empty($picture_data)) {
           file_put_contents($filepath, $picture_data);
         }
         else {
-          print "WARNING:....file contents were empty!";
+          verbose("WARNING:....file contents were empty!");
         }
-        print "Saved picture\n";
+        verbose("Saved picture\n");
       }
       else {
-        print "Already downloaded picture.\n";
+        verbose("Already downloaded picture.\n");
       }
+      
+      // PICTURE RESULT
+      verbose("<img src='$filepath' height='100px' />");
+      
+
+      
+      
+      
       
       $outfile = $dirpath.'/'.$picture->NID.'-COLORING.'.$file_ext;
       if (file_exists($filepath) && !file_exists($outfile)) {
         // GENERATE COLORING PAGE
-        print "Creating coloring page from picture\n";
+        verbose("Creating coloring page from picture\n");
         `/usr/local/bin/convert $filepath -resize 700x700 $outfile`;
         `/usr/local/bin/convert $filepath -define convolve:scale='!' -define morphology:compose=Lighten -morphology Convolve 'Sobel:>' $outfile`;
         `/usr/local/bin/convert $outfile -colorspace Gray -equalize -threshold 75% -negate -statistic Maximum 2x2 $outfile`;
-        print "Finished creating coloring page\n";
+        verbose("Finished creating coloring page\n");
       }
       else {
-        print "Already generated coloring page, or input file missing.\n";
+        verbose("Already generated coloring page, or input file missing.\n");
       }
-        
+
+      // COLORING PAGE RESULT
+      verbose("<img src='$outfile' height='100px' />");
+
+      
+      
+      
+      
       $outfile_thumb = $dirpath.'/'.$picture->NID.'-THUMB.'.$file_ext;
       if (file_exists($filepath) && !file_exists($outfile_thumb)) {
         // GENERATE THUMBNAIL
         `/usr/local/bin/convert $filepath -thumbnail 100x100 $outfile_thumb`;
       }
       else {
-        print "Already generated thumbnail, or input file missing.";
+        verbose("Already generated thumbnail, or input file missing.");
       }
       
+      // THUMBNAIL RESULT
+      verbose("<img src='$outfile_thumb' height='100px' />");
+      
+      
+      
+      
+      
     } // end foreach picture
-    print "Finished retrieving pictures\n";
+    verbose("Finished retrieving pictures\n");
     
     
     //
@@ -131,10 +154,10 @@ function process_cards($data_source_url, $results_directory) {
     //
     
     card_data_save($dirpath, '_data.json', $cards);
-    print "Card data saved\n";
+    verbose("Card data saved\n");
     
   } // end foreach nid
-  print "Finished processing cards\n";
+  verbose("Finished processing cards\n");
   
 }
 
@@ -161,8 +184,8 @@ function card_data_save($dirpath, $filename, &$cards_data) {
 
 function dirpath_cards($results_directory, $nid) {
   if (!is_string($nid)) {
-    print "NOT A STRING\n";
-    print_r($nid);
+    verbose("NOT A STRING\n");
+    verbose(print_r($nid, TRUE));
   }
   return $results_directory.'/packs_cards/'.$nid;
 }

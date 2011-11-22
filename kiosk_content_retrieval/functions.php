@@ -13,7 +13,8 @@ function audio_retrieve($audio_ids, $local_path) {
     $local_filepath = $local_path.'/'.$audio_id.'.flv';
     if (file_exists($local_filepath)) {
       unset($audio_ids[$index]);
-      print "Audio file exists...skipping\n";
+      verbose("Audio file exists...skipping\n");
+      verbose("<audio src='$local_filepath' controls />");
     }
   }
   
@@ -21,7 +22,7 @@ function audio_retrieve($audio_ids, $local_path) {
   $audio_host_domain = $GLOBALS['config']['audio_host']['domain'];
   $CONN = ssh2_connect($audio_host_domain, 22);
   if (!$CONN) {
-    print "COULD NOT CONNECT!\n";
+    verbose("COULD NOT CONNECT!\n");
     return;
   }
 
@@ -29,7 +30,7 @@ function audio_retrieve($audio_ids, $local_path) {
   $audio_host_name = $GLOBALS['config']['audio_host']['name'];
   $audio_host_pass = $GLOBALS['config']['audio_host']['pass'];
   if (!ssh2_auth_password($CONN, $audio_host_name, $audio_host_pass)) {
-    print "COULD NOT AUTHENTICATE!\n";
+    verbose("COULD NOT AUTHENTICATE!\n");
     return;
   }
   
@@ -37,7 +38,7 @@ function audio_retrieve($audio_ids, $local_path) {
   $SFTP = ssh2_sftp($CONN);
   
   foreach ($audio_ids as $audio_id) {
-    print "Retrieving $audio_id\n";
+    verbose("Retrieving $audio_id\n");
     $audio_host_path = $GLOBALS['config']['audio_host']['path'];
     $remote_filepath = $audio_host_path.'/'.$audio_id.'.flv';
     $audio_data = file_get_contents("ssh2.sftp://{$SFTP}/".$remote_filepath);
@@ -46,10 +47,11 @@ function audio_retrieve($audio_ids, $local_path) {
       file_put_contents($local_filepath, $audio_data);
     }
     else {
-      print "WARNING...file contents were empty!";
+      verbose("WARNING...file contents were empty!");
     }
+    verbose("<audio src='$local_filepath' controls />");
   }
-  print "Finished retrieving audio \n";
+  verbose("Finished retrieving audio \n");
 }
 
 function audio_convert($audio_ids, $local_path) {
@@ -59,14 +61,15 @@ function audio_convert($audio_ids, $local_path) {
     $local_filepath = $local_path.'/'.$audio_id.'.ogg';
     if (file_exists($local_filepath)) {
       unset($audio_ids[$index]);
-      print "Audio file exists...skipping\n";
+      verbose("Audio file exists...skipping\n");
+      verbose("<audio src='$local_filepath' controls />");
     }
   }
   
   foreach ($audio_ids as $audio_id) {
     $file_input = $local_path.'/'.$audio_id.'.flv';
     if (file_exists($file_input)) {
-      print "Converting audio\n";
+      verbose("Converting audio\n");
       $file_output = $local_path.'/'.$audio_id.'.ogg';
       if (PHP_OS == 'WINNT') {
         print `c:\\program files\\ffmpeg2theora\\ffmpeg2theora.exe $file_input -o $file_output` . "\n";
@@ -76,9 +79,9 @@ function audio_convert($audio_ids, $local_path) {
       }
     }
     else {
-      print "Audio file missing...so can't convert it.";
+      verbose("Audio file missing...so can't convert it.");
     }
-    
+    verbose("<audio src='$local_filepath' controls />");
   }
-  print "Finished converting audio\n";
+  verbose("Finished converting audio\n");
 }
