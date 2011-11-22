@@ -65,6 +65,7 @@ function audio_convert($audio_ids, $local_path) {
       unset($audio_ids[$index]);
       verbose("Audio file exists...skipping\n");
       verbose("<audio src='$local_filepath' controls />");
+      verbose($local_filepath);
     }
   }
   
