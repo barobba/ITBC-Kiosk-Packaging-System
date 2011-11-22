@@ -2,22 +2,19 @@
 
 $packages = array(
 
-  'lakota' => array(
-
+  'lakota_animals' => array(
     array(
-      'name' => 'Coloring pages',
-      'description' => 'This content was picked for the Lakota/Dakota/Nakota Language Summit, for demonstration purposes',
-      'data_source_url' => $config['domain'].'/endpoints/selected-nodes/json.php?file=coloring_pages',
+      'name' => 'Animals',
+      'description' => 'Lakota animals',
+      'data_source_url' => $config['domain'].'/endpoints/selected-nodes/json.php?file=lakota_animals',
       'handlers' => array(
       	'cards',
-        //'coloring_pages' CURRENTLY, THE CARDS ALSO MAKE THE COLORING PAGES
       ),
     ),
-
     array(
       'name' => 'Songs',
       'description' => 'This content was picked for the Lakota/Dakota/Nakota Language Summit, for demonstration purposes',
-      'data_source_url' => $config['domain'].'/endpoints/selected-nodes/json.php?file=songs',
+      'data_source_url' => $config['domain'].'/endpoints/selected-nodes/json.php?file=lakota_animal_songs',
       'handlers' => array('songs'),
     ),
     
