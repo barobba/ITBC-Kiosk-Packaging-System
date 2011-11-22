@@ -85,6 +85,7 @@ function process_cards($data_source_url, $results_directory) {
       
       // PICTURE RESULT
       verbose("<img src='$filepath' height='100px' />");
+      verbose($filepath);
       
 
       
@@ -106,7 +107,8 @@ function process_cards($data_source_url, $results_directory) {
 
       // COLORING PAGE RESULT
       verbose("<img src='$outfile' height='100px' />");
-
+      verbose($outfile);
+      
       
       
       
@@ -122,6 +124,7 @@ function process_cards($data_source_url, $results_directory) {
       
       // THUMBNAIL RESULT
       verbose("<img src='$outfile_thumb' height='100px' />");
+      verbose($outfile_thumb);
       
       
       

@@ -15,6 +15,7 @@ function audio_retrieve($audio_ids, $local_path) {
       unset($audio_ids[$index]);
       verbose("Audio file exists...skipping\n");
       verbose("<audio src='$local_filepath' controls />");
+      verbose($local_filepath);
     }
   }
   
@@ -50,6 +51,7 @@ function audio_retrieve($audio_ids, $local_path) {
       verbose("WARNING...file contents were empty!");
     }
     verbose("<audio src='$local_filepath' controls />");
+    verbose($local_filepath);
   }
   verbose("Finished retrieving audio \n");
 }
