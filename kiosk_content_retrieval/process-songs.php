@@ -30,20 +30,29 @@ function process_songs($data_source_url, $results_directory) {
   // RETRIEVE AUDIO
   //
   $audio_ids = array();
-  foreach ($songs->songs as &$song) {
-    if (!empty($song->songAudio->audioID)) {
-      $audio_ids []= $song->songAudio->audioID;
+  if (property_exists($songs, 'songs')) {
+    
+    foreach ($songs->songs as &$song) {
+      if (!empty($song->songAudio->audioID)) {
+        verbose($song->songAudio->audioID);
+        $audio_ids []= $song->songAudio->audioID;
+      }
     }
+    audio_retrieve($audio_ids, dirpath_songs($results_directory));
+    audio_convert($audio_ids, dirpath_songs($results_directory));
+    
+    //
+    // SAVE THE SONG FILE
+    //
+    
+    song_data_save($results_directory, '_data.json', $songs);
+    verbose("Song data saved\n");
+  
   }
-  audio_retrieve($audio_ids, dirpath_songs($results_directory));
-  audio_convert($audio_ids, dirpath_songs($results_directory));
+  else {
+    verbose('Nothing to print...');
+  }
   
-  //
-  // SAVE THE SONG FILE
-  //
-  
-  song_data_save($results_directory, '_data.json', $songs);
-  verbose("Song data saved\n");
   
 }
 
