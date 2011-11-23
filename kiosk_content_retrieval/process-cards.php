@@ -92,6 +92,30 @@ function process_cards($data_source_url, $results_directory) {
       
       
       
+      $outfile_card = $dirpath.'/'.$picture->NID.'-CARD.'.$file_ext;
+      if (file_exists($filepath) && !file_exists($outfile_card)) {
+        // GENERATE CARD-SIZED IMAGE
+        verbose("Creating card-sized image from picture\n");
+        `/usr/local/bin/convert $filepath -resize 180x180 $outfile_card`;
+        verbose("Finished creating card-sized image\n");
+      }
+      else {
+        verbose("Already generated card-sized image, or input file missing.\n");
+      }
+
+      // CARD RESULT
+      verbose("<img src='$outfile_card' height='100px' />");
+      verbose($outfile_card);
+      
+      
+      
+
+      
+      
+      
+      
+      
+      
       $outfile = $dirpath.'/'.$picture->NID.'-COLORING.'.$file_ext;
       if (file_exists($filepath) && !file_exists($outfile)) {
         // GENERATE COLORING PAGE
