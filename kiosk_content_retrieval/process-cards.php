@@ -96,7 +96,7 @@ function process_cards($data_source_url, $results_directory) {
       if (file_exists($filepath) && !file_exists($outfile_card)) {
         // GENERATE CARD-SIZED IMAGE
         verbose("Creating card-sized image from picture\n");
-        `/usr/local/bin/convert $filepath -resize 180x180 $outfile_card`;
+        `/usr/local/bin/convert $filepath -resize 180x180 -background black -compose Copy -gravity center -extent 180x180 $outfile_card`;
         verbose("Finished creating card-sized image\n");
       }
       else {
