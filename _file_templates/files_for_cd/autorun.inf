@@ -1,0 +1,3 @@
+[autorun] 
+open=Windows\chrome-win32\chrome.exe --app=Windows\datafiles\index.html --allow-file-access-from-files
+label=ITBC Lakota Language Children's Activities
