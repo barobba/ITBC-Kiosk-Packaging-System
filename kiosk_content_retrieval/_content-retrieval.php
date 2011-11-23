@@ -10,7 +10,6 @@ require_once('../_libraries/endpoint_functions/functions.php');
 require_once('include-packages.php');
 
 require_once('process-cards.php');
-require_once('process-coloring-pages.php');
 require_once('process-songs.php');
 
 $result = '';
