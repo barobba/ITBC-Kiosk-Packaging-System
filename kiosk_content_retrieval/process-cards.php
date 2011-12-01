@@ -121,7 +121,7 @@ function process_cards($data_source_url, $results_directory) {
         // GENERATE COLORING PAGE
         verbose("Creating coloring page from picture\n");
         `/usr/local/bin/convert $filepath -resize 700x700 $outfile`;
-        `/usr/local/bin/convert $filepath -define convolve:scale='!' -define morphology:compose=Lighten -morphology Convolve 'Sobel:>' $outfile`;
+        `/usr/local/bin/convert $outfile -define convolve:scale='!' -define morphology:compose=Lighten -morphology Convolve 'Sobel:>' $outfile`;
         `/usr/local/bin/convert $outfile -colorspace Gray -equalize -threshold 75% -negate -statistic Maximum 2x2 $outfile`;
         verbose("Finished creating coloring page\n");
       }
